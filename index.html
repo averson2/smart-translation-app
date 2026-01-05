@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Translation - Akıllı Çeviri</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <span class="material-icons splash-icon">translate</span>
+            <h1>Smart Translation</h1>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="auth-container" class="auth-container hidden">
+        <!-- Login Screen -->
+        <div id="login-screen" class="auth-screen">
+            <div class="auth-card">
+                <span class="material-icons auth-icon">translate</span>
+                <h1>Hoş Geldiniz</h1>
+                <p class="subtitle">Devam etmek için giriş yapın</p>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <span class="material-icons">email</span>
+                        <input type="email" id="login-email" placeholder="E-posta" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="material-icons">lock</span>
+                        <input type="password" id="login-password" placeholder="Şifre" required>
+                        <span class="material-icons toggle-password" onclick="togglePassword('login-password')">visibility</span>
+                    </div>
+                    <button type="button" class="link-button" onclick="showScreen('forgot-password-screen')">Şifremi Unuttum?</button>
+                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                </form>
+                
+                <p class="auth-link">
+                    Hesabınız yok mu? <button type="button" class="link-button" onclick="showScreen('register-screen')">Kayıt Ol</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Screen -->
+        <div id="register-screen" class="auth-screen hidden">
+            <div class="auth-card">
+                <span class="material-icons auth-icon">person_add</span>
+                <h1>Hesap Oluştur</h1>
+                <p class="subtitle">Başlamak için kayıt olun</p>
+                
+                <form id="register-form">
+                    <div class="input-group">
+                        <span class="material-icons">email</span>
+                        <input type="email" id="register-email" placeholder="E-posta" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="material-icons">lock</span>
+                        <input type="password" id="register-password" placeholder="Şifre (en az 6 karakter)" required>
+                        <span class="material-icons toggle-password" onclick="togglePassword('register-password')">visibility</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="material-icons">lock</span>
+                        <input type="password" id="register-confirm-password" placeholder="Şifreyi Onayla" required>
+                        <span class="material-icons toggle-password" onclick="togglePassword('register-confirm-password')">visibility</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                </form>
+                
+                <p class="auth-link">
+                    Zaten hesabınız var mı? <button type="button" class="link-button" onclick="showScreen('login-screen')">Giriş Yap</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Forgot Password Screen -->
+        <div id="forgot-password-screen" class="auth-screen hidden">
+            <div class="auth-card">
+                <span class="material-icons auth-icon">lock_reset</span>
+                <h1>Şifre Sıfırlama</h1>
+                <p class="subtitle">E-posta adresinize şifre sıfırlama bağlantısı göndereceğiz</p>
+                
+                <form id="forgot-password-form">
+                    <div class="input-group">
+                        <span class="material-icons">email</span>
+                        <input type="email" id="reset-email" placeholder="E-posta" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sıfırlama Bağlantısı Gönder</button>
+                </form>
+                
+                <p class="auth-link">
+                    <button type="button" class="link-button" onclick="showScreen('login-screen')">← Giriş ekranına dön</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container hidden">
+        <!-- App Bar -->
+        <header class="app-bar">
+            <h1>Smart Translation</h1>
+            <div class="app-bar-actions">
+                <button class="icon-btn" onclick="clearHistory()" title="Geçmişi Temizle">
+                    <span class="material-icons">delete_outline</span>
+                </button>
+                <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">
+                    <span class="material-icons">settings</span>
+                </button>
+                <button class="icon-btn" onclick="toggleMenu()" title="Menü">
+                    <span class="material-icons">more_vert</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Menu Dropdown -->
+        <div id="menu-dropdown" class="menu-dropdown hidden">
+            <button onclick="logout()">
+                <span class="material-icons">logout</span>
+                Çıkış Yap
+            </button>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <div class="language-chip" onclick="showLanguagePicker('lang1')">
+                <span class="flag" id="lang1-flag">🇬🇧</span>
+                <span id="lang1-name">English</span>
+            </div>
+            <button class="icon-btn" onclick="swapLanguages()" title="Dilleri Değiştir">
+                <span class="material-icons">swap_horiz</span>
+            </button>
+            <div class="language-chip" onclick="showLanguagePicker('lang2')">
+                <span class="flag" id="lang2-flag">🇹🇷</span>
+                <span id="lang2-name">Türkçe</span>
+            </div>
+        </div>
+
+        <!-- Translation History -->
+        <div id="translation-history" class="translation-history">
+            <div class="empty-state">
+                <span class="material-icons">translate</span>
+                <h3>Çeviri Yapmaya Başlayın</h3>
+                <p>Aşağıya bir mesaj yazın</p>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <textarea id="input-text" placeholder="Çeviri için yazın..." rows="1"></textarea>
+            <button id="send-btn" class="btn-fab" onclick="translateText()">
+                <span class="material-icons">send</span>
+            </button>
+        </div>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel hidden">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>Ayarlar</h2>
+                    <button class="icon-btn" onclick="toggleSettings()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Görünüm</h3>
+                    <div class="setting-item">
+                        <span class="material-icons">brightness_6</span>
+                        <div class="setting-info">
+                            <label>Tema</label>
+                            <select id="theme-select" onchange="changeTheme(this.value)">
+                                <option value="light">Açık</option>
+                                <option value="dark">Koyu</option>
+                                <option value="system">Sistem</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="material-icons">format_size</span>
+                        <div class="setting-info">
+                            <label>Metin Boyutu: <span id="text-size-value">16</span>px</label>
+                            <input type="range" id="text-size-slider" min="12" max="24" value="16" onchange="changeTextSize(this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>İşlevsellik</h3>
+                    <div class="setting-item">
+                        <span class="material-icons">content_copy</span>
+                        <div class="setting-info">
+                            <label>Otomatik Kopyala</label>
+                            <p class="setting-description">Çeviriyi otomatik olarak kopyala</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="auto-copy-toggle" onchange="toggleAutoCopy(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Hakkında</h3>
+                    <div class="setting-item">
+                        <span class="material-icons">info</span>
+                        <div class="setting-info">
+                            <label>Versiyon</label>
+                            <p class="setting-description">1.0.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Language Picker Modal -->
+        <div id="language-picker-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="language-picker-title">Dil Seçin</h2>
+                    <button class="icon-btn" onclick="closeLanguagePicker()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <div id="language-picker-list" class="language-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/translation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
